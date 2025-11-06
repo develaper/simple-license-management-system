@@ -1,0 +1,6 @@
+en:
+  products:
+    created: "Product was successfully created."
+    updated: "Product was successfully updated."
+    deleted: "Product was successfully deleted."
+    not_found: "%{resource} not found."
