@@ -11,7 +11,8 @@ The description of the task divided in User Stories fits perfectly my usual deve
  PR1. [Adding an Account](https://github.com/develaper/simple-license-management-system/pull/4):
   I will use UUID as primary keys for better data portability and to avoid sequential ID exposure.
   Implementing both model-level and database-level validations for the Account name ensures data integrity across all application layers while providing immediate user feedback and protecting against data inconsistencies.
-  PR2. [Adding a Product](https://github.com/develaper/simple-license-management-system/pull/5):
+
+ PR2. [Adding a Product](https://github.com/develaper/simple-license-management-system/pull/5):
   This PR introduces the Product model, allowing for the management of products within the system. Similar to the Account model, UUIDs are used as primary keys, and validations are implemented to ensure data integrity.
 
 ## Getting Started
