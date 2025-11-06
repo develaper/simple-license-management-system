@@ -92,13 +92,14 @@ RSpec.describe "/accounts", type: :request do
     end
 
     context "with invalid parameters" do
+      let!(:initial_count) { Account.count }
+
       before do
         post accounts_url, params: { account: invalid_attributes }
       end
 
       it "does not create a new Account" do
-        expect { post accounts_url, params: { account: invalid_attributes } }
-          .not_to change(Account, :count)
+        expect(Account.count).to eq(initial_count)
       end
 
       it_behaves_like "renders unprocessable entity"
