@@ -1,0 +1,8 @@
+en:
+  accounts:
+    created: "Account was successfully created."
+    updated: "Account was successfully updated."
+    deleted: "Account was successfully deleted."
+    not_found: "%{resource} not found."
+  shared:
+    not_found: "%{resource} not found."
