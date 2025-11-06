@@ -15,6 +15,9 @@ The description of the task divided in User Stories fits perfectly my usual deve
  PR2. [Adding a Product](https://github.com/develaper/simple-license-management-system/pull/5):
   This PR introduces the Product model, allowing for the management of products within the system. Similar to the Account model, UUIDs are used as primary keys, and validations are implemented to ensure data integrity.
 
+ PR3. [Adding a User](https://github.com/develaper/simple-license-management-system/pull/6):
+  The User model is introduced in this PR, establishing a relationship with the Account model. Each user belongs to an account, and UUIDs are used for primary keys. Validations ensure that user data is accurate and complete. The specs for the validation might look a bit verbose but I rather have explicit tests for each validation case instead of using shared examples or loops, as it improves readability and makes it easier to identify specific test failures.
+
 ## Getting Started
 
 ### System Requirements
