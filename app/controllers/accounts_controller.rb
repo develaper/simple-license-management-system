@@ -50,11 +50,11 @@ class AccountsController < ApplicationController
   end
 
   def handle_not_found
-    flash[:alert] = t(".not_found", resource: "Account")
+    flash[:alert] = t("accounts.not_found", resource: "Account")
     redirect_to accounts_path
   end
 
   def redirect_after_action(destination, action)
-    redirect_to destination, notice: t(".#{action}")
+    redirect_to destination, notice: t("accounts.#{action}")
   end
 end
