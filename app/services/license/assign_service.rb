@@ -34,6 +34,13 @@ module License
 
     private
 
+    def existing_assignments
+      @existing_assignments ||= LicenseAssignment
+        .where(user_id: users.map(&:id), product_id: subscriptions.map { |s| s.product.id })
+        .pluck(:user_id, :product_id)
+        .map { |user_id, product_id| [ user_id, product_id ] }
+    end
+
     def duplicate_assignments
       @duplicate_assignments ||= find_duplicate_assignments
     end
@@ -42,7 +49,7 @@ module License
       duplicates = []
       subscriptions.each do |subscription|
         users.each do |user|
-          if LicenseAssignment.exists?(user: user, product: subscription.product)
+          if existing_assignments.include?([ user.id, subscription.product.id ])
             duplicates << { user: user.name, product: subscription.product.name }
           end
         end
@@ -55,7 +62,7 @@ module License
         assignments = []
         subscriptions.each do |subscription|
           users.each do |user|
-            unless LicenseAssignment.exists?(user: user, product: subscription.product)
+            unless existing_assignments.include?([ user.id, subscription.product.id ])
               assignments << { user: user, product: subscription.product }
             end
           end

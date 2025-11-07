@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe License::UnassignService do
+  RSpec.describe License::UnassignService do
   include_context "with license assignment setup"
 
   let(:license_assignment) do

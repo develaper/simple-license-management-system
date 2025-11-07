@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe License::AssignService do
+  RSpec.describe License::AssignService do
   let(:account) { create(:account) }
   let(:user) { create(:user, account: account) }
   let(:product) { create(:product) }
