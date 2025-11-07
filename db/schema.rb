@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_06_000004) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_07_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -28,6 +28,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_000004) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id", null: false
+    t.uuid "product_id", null: false
+    t.integer "number_of_licenses", null: false
+    t.datetime "issued_at", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "product_id"], name: "index_subscriptions_on_account_and_product", unique: true
+    t.index ["account_id"], name: "index_subscriptions_on_account_id"
+    t.index ["product_id"], name: "index_subscriptions_on_product_id"
+    t.check_constraint "number_of_licenses > 0", name: "check_positive_licenses"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
@@ -38,5 +52,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_000004) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "subscriptions", "accounts"
+  add_foreign_key "subscriptions", "products"
   add_foreign_key "users", "accounts"
 end

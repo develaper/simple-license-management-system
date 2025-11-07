@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   resources :accounts do
     resources :users, module: "accounts"
+    resources :subscriptions, module: "accounts"
   end
   resources :products
 end

@@ -1,0 +1,16 @@
+en:
+  activerecord:
+    errors:
+      models:
+        subscription:
+          attributes:
+            product_id:
+              taken: "already has an active subscription for this account"
+            expires_at:
+              after_issued_at: "must be after the issued date"
+  accounts:
+    subscriptions:
+      created: "Subscription was successfully created."
+      updated: "Subscription was successfully updated."
+      deleted: "Subscription was successfully deleted."
+      not_found: "%{resource} not found"
