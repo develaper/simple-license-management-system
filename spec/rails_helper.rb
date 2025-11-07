@@ -20,6 +20,9 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
+# Load shared examples and contexts
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
 RSpec.configure do |config|
   config.fixture_paths = [ "#{::Rails.root}/spec/fixtures" ]
   config.use_transactional_fixtures = true
