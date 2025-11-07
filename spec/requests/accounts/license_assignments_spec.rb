@@ -14,7 +14,6 @@ RSpec.describe "/accounts/:account_id/license_assignments", type: :request do
     }
   end
 
-  # Para probar el caso de múltiples asignaciones
   let(:second_user) { create(:user, account: account) }
   let(:second_product) { create(:product) }
   let(:second_subscription) { create(:subscription, account: account, product: second_product) }
@@ -76,7 +75,6 @@ RSpec.describe "/accounts/:account_id/license_assignments", type: :request do
 
     context "with insufficient licenses" do
       before do
-        # Crear una asignación que use todas las licencias disponibles
         create(:license_assignment, user: create(:user, account: account),
                product: product, account: account)
         subscription.update!(number_of_licenses: 1)
