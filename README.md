@@ -18,6 +18,8 @@ The description of the task divided in User Stories fits perfectly my usual deve
  PR3. [Adding a User](https://github.com/develaper/simple-license-management-system/pull/6):
   The User model is introduced in this PR, establishing a relationship with the Account model. Each user belongs to an account, and UUIDs are used for primary keys. Validations ensure that user data is accurate and complete. The specs for the validation might look a bit verbose but I rather have explicit tests for each validation case instead of using shared examples or loops, as it improves readability and makes it easier to identify specific test failures.
   In this PR, the UsersController is nested under Accounts (Accounts::UsersController) to reflect the domain structure — users exist within the scope of their account, not globally. This approach enforces data isolation, prevents cross-account access, and simplifies controller logic by automatically scoping queries to the current account. It also aligns with the intended UX, where managing users is a contextual action performed within the account’s workspace.
+ PR4. [Adding a Subscription](https://github.com/develaper/simple-license-management-system/pull/7):
+  This PR introduces the Subscription model, enabling accounts to subscribe to specific products with a defined number of licenses and validity period. Subscriptions are created within the account scope, reflecting the domain hierarchy and maintaining data isolation and clarity in the user flow.
 
 ## Getting Started
 
