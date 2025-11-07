@@ -1,0 +1,7 @@
+en:
+  accounts:
+    users:
+      not_found: "%{resource} not found"
+      created: User was successfully created.
+      updated: User was successfully updated.
+      deleted: User was successfully deleted.

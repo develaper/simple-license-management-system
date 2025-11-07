@@ -15,6 +15,10 @@ The description of the task divided in User Stories fits perfectly my usual deve
  PR2. [Adding a Product](https://github.com/develaper/simple-license-management-system/pull/5):
   This PR introduces the Product model, allowing for the management of products within the system. Similar to the Account model, UUIDs are used as primary keys, and validations are implemented to ensure data integrity.
 
+ PR3. [Adding a User](https://github.com/develaper/simple-license-management-system/pull/6):
+  The User model is introduced in this PR, establishing a relationship with the Account model. Each user belongs to an account, and UUIDs are used for primary keys. Validations ensure that user data is accurate and complete. The specs for the validation might look a bit verbose but I rather have explicit tests for each validation case instead of using shared examples or loops, as it improves readability and makes it easier to identify specific test failures.
+  In this PR, the UsersController is nested under Accounts (Accounts::UsersController) to reflect the domain structure — users exist within the scope of their account, not globally. This approach enforces data isolation, prevents cross-account access, and simplifies controller logic by automatically scoping queries to the current account. It also aligns with the intended UX, where managing users is a contextual action performed within the account’s workspace.
+
 ## Getting Started
 
 ### System Requirements
