@@ -1,0 +1,99 @@
+<% content_for :title, t(".title", account_name: @account.name) %>
+
+<div class="container mx-auto px-4 py-8" data-controller="license-assignment">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">
+      <%= t(".title", account_name: @account.name) %>
+    </h1>
+    <%= link_to account_path(@account), 
+                class: "inline-block mt-4 text-sm text-indigo-600 hover:text-indigo-800" do %>
+      <i class="fas fa-arrow-left mr-1"></i> <%= t(".back_to_account") %>
+    <% end %>
+  </div>
+
+  
+
+  <div class="mb-6 flex justify-end items-center space-x-4">
+    <%= form_with(model: [@account, LicenseAssignment.new], 
+                  data: { 
+                    license_assignment_target: "form",
+                    action: "submit->license-assignment#submit"
+                  }) do |f| %>
+      <%= f.submit t(".assign"), 
+                  class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed",
+                  disabled: true,
+                  data: { license_assignment_target: "submitButton" } %>
+    <% end %>
+
+    <%= form_with(model: [@account, LicenseAssignment.new], 
+                  url: account_license_assignment_path(@account, 0),
+                  method: :delete,
+                  data: { 
+                    license_assignment_target: "unassignForm",
+                    action: "submit->license-assignment#submitUnassign"
+                  }) do |f| %>
+      <%= f.submit t(".unassign"), 
+                  class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed",
+                  disabled: true,
+                  data: { license_assignment_target: "unassignButton" } %>
+    <% end %>
+  </div>
+  <div class="text-sm text-gray-500 mb-6">
+    <%= t(".selection_info_html") %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Left column: Subscriptions -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">
+        <%= t(".subscriptions") %>
+      </h2>
+      
+      <div class="space-y-4">
+        <% @account.subscriptions.includes(:product).each do |subscription| %>
+          <div class="border rounded p-4 bg-gray-50 cursor-pointer hover:border-indigo-500 transition-colors duration-150"
+               data-license-assignment-target="subscription"
+               data-action="click->license-assignment#selectSubscription"
+               data-subscription-id="<%= subscription.id %>"
+               data-product-id="<%= subscription.product.id %>">
+            <div class="font-medium text-gray-900">
+              <%= subscription.product.name %>
+              <span class="text-sm text-gray-600">
+                (<%= t(".licenses_available", count: subscription.licenses_available) %>)
+              </span>
+            </div>
+            <div class="text-sm text-gray-600 mt-1">
+              <%= t(".licenses_info", assigned: subscription.assigned_licenses_count, total: subscription.number_of_licenses) %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Right column: Users -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">
+        <%= t(".users") %>
+      </h2>
+      
+      <div class="space-y-4">
+        <% @account.users.each do |user| %>
+          <div class="border rounded p-4 bg-gray-50 cursor-pointer hover:border-indigo-500 transition-colors duration-150"
+               data-license-assignment-target="user"
+               data-action="click->license-assignment#selectUser"
+               data-user-id="<%= user.id %>">
+            <div class="font-medium text-gray-900">
+              <%= user.name %>
+            </div>
+            <div class="text-sm text-gray-600 mt-1">
+              <%= user.email %>
+            </div>
+            <div class="text-xs text-gray-500 mt-1">
+              <%= t(".assigned_licenses", count: user.license_assignments.count) %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

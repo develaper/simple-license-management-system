@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_07_000001) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_07_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -19,6 +19,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_000001) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "license_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id", null: false
+    t.uuid "user_id", null: false
+    t.uuid "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_license_assignments_on_account_id"
+    t.index ["product_id"], name: "index_license_assignments_on_product_id"
+    t.index ["user_id"], name: "index_license_assignments_on_user_id"
   end
 
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -52,6 +63,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_000001) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "license_assignments", "accounts"
+  add_foreign_key "license_assignments", "products"
+  add_foreign_key "license_assignments", "users"
   add_foreign_key "subscriptions", "accounts"
   add_foreign_key "subscriptions", "products"
   add_foreign_key "users", "accounts"

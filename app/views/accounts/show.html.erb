@@ -112,8 +112,57 @@
     </div>
   </div>
 
+  <div class="mt-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h2 class="text-xl font-semibold text-gray-900"><%= t(".license_assignments.title") %></h2>
+        <p class="mt-2 text-sm text-gray-700"><%= t(".license_assignments.description") %></p>
+      </div>
+      <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+        <%= link_to t(".license_assignments.manage"), new_account_license_assignment_path(@account), class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
+      </div>
+    </div>
+
+    <div class="mt-8 flex flex-col">
+      <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">User</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Product</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Assigned At</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <% @account.license_assignments.includes(:user, :product).each do |assignment| %>
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6">
+                      <%= assignment.user.name %>
+                      <span class="text-gray-500">(<%= assignment.user.email %>)</span>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= assignment.product.name %></td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= l(assignment.created_at.to_date, format: :long) %></td>
+                  </tr>
+                <% end %>
+
+                <% if @account.license_assignments.empty? %>
+                  <tr>
+                    <td colspan="3" class="px-3 py-4 text-sm text-gray-500 text-center"><%= t(".license_assignments.no_assignments") %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="mt-6 flex space-x-3">
     <%= link_to 'Back to Accounts', accounts_path, class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" %>
     <%= button_to 'Delete Account', account_path(@account), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded", data: { turbo_confirm: 'Are you sure?' } %>
+    <%= link_to 'Products', products_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
   </div>
 </div>

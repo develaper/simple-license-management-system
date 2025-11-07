@@ -20,6 +20,42 @@ The description of the task divided in User Stories fits perfectly my usual deve
   In this PR, the UsersController is nested under Accounts (Accounts::UsersController) to reflect the domain structure — users exist within the scope of their account, not globally. This approach enforces data isolation, prevents cross-account access, and simplifies controller logic by automatically scoping queries to the current account. It also aligns with the intended UX, where managing users is a contextual action performed within the account’s workspace.
  PR4. [Adding a Subscription](https://github.com/develaper/simple-license-management-system/pull/7):
   This PR introduces the Subscription model, enabling accounts to subscribe to specific products with a defined number of licenses and validity period. Subscriptions are created within the account scope, reflecting the domain hierarchy and maintaining data isolation and clarity in the user flow.
+ PR5. [Adding License Assignments](https://github.com/develaper/simple-license-management-system/pull/8):
+  This PR introduces the ability to assign and unassign product licenses to users within an account. Since the specification doesn’t define a direct relationship between Subscription and LicenseAssignment, I added helper methods in Subscription to compute assigned and available licenses — though in a real-world scenario I’d prefer defining an explicit association between them.
+  I placed the license assignments view inside the account’s show page to keep all related resources consistently grouped under Account.
+  I briefly considered adding an active flag to license assignments, but decided against it. Without historical tracking, the existence of a record already represents an active assignment, so an extra flag felt redundant.
+  I split the logic into separate services for assigning and unassigning licenses to keep responsibilities clean and avoid conditionals. I also introduced ObjectQueries to encapsulate query logic, and extracted shared examples and contexts to keep the specs lean and expressive.
+
+## Technical Debt and Doubts
+
+### License Assignment Update Validation
+The `LicenseAssignment` model includes a uniqueness validation that prevents duplicate assignments for the same user and product. This validation could prevent updates to existing records, the addition of `where.not(id: id) if persisted?` to the validation query would prevent it.
+
+**Current Decision**: I've chosen not to implement this change because:
+1. The current business logic doesn't include any update operations for license assignments
+2. Assignments are only created or deleted, never modified
+3. The current validation accurately reflects our business rule: one license per user per product, no exceptions
+
+**Future Considerations**:
+- If updates become necessary, I would need to:
+  - Define what "updating" a license assignment means in our domain
+  - Add relevant attributes that could be modified
+  - Adjust the validation accordingly with `where.not(id: id) if persisted?`
+  - Add appropriate update actions to the controller
+
+This decision aligns with YAGNI principles while keeping our code base focused on current requirements.
+
+
+### Subscription and LicenseAssignment Relationship
+The current implementation calculates assigned and available licenses through methods in the Subscription model, causing N+1 query problems and violating Single Responsibility Principle. A more optimal approach would be:
+
+1. **Direct Association**: Establish a formal relationship between Subscription and LicenseAssignment through the product_id
+2. **Counter Cache**: Implement a counter_cache to track assigned licenses efficiently
+3. **Service Object**: Move calculation logic to a dedicated service (e.g., `LicenseAvailabilityService`)
+4. **Denormalization**: Add assigned_licenses column to Subscription for fast querying
+
+These changes would improve performance, maintain better separation of concerns, and make the codebase more maintainable. The current implementation was chosen to meet immediate requirements, but a production system would benefit from these optimizations.
+
 
 ## Getting Started
 

@@ -1,0 +1,42 @@
+en:
+  activerecord:
+    errors:
+      models:
+        license_assignment:
+          attributes:
+            base:
+              duplicate_assignment: "%{user} already has a license for %{product}"
+  accounts:
+    license_assignments:
+      create:
+        success: "License assignments were successfully created"
+        invalid_users: "Some selected users are invalid"
+        insufficient_licenses: "Not enough licenses available for %{product}. Need %{needed}, but only %{available} available"
+        duplicate_assignment: "%{user} already has a license for %{product}"
+      destroy:
+        success: "License assignments were successfully removed"
+        no_assignments_found: "No matching license assignments found"
+      index:
+        title: "License Assignments for %{account_name}"
+        back_to_account: "Back to Account"
+        licenses_info: "%{assigned} of %{total} licenses assigned"
+        assigned_licenses:
+          zero: "No licenses assigned"
+          one: "1 license assigned"
+          other: "%{count} licenses assigned"
+        new_assignment: "Manage License Assignments"
+        assigned_at: "Assigned on %{date}"
+        product_license: "License for %{product}"
+        no_assignments: "No license assignments found"
+      new:
+        title: "Assign Licenses for %{account_name}"
+        back_to_account: "Back to Account"
+        subscriptions: "Available Subscriptions"
+        users: "Account Users"
+        assign: "Assign Licenses"
+        unassign: "Unassign Licenses"
+        selection_info_html: "Click to select multiple users and a subscription"
+        licenses_available:
+          zero: "no licenses available"
+          one: "1 license available"
+          other: "%{count} licenses available"
