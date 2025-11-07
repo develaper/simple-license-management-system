@@ -88,10 +88,10 @@ RSpec.describe "/accounts/:account_id/license_assignments", type: :request do
         }.not_to change(LicenseAssignment, :count)
       end
 
-      it "renders new with error" do
+      it "redirects with error message" do
         post account_license_assignments_path(account), params: { license_assignment: valid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to include("Not enough licenses available")
+        expect(response).to redirect_to(account_path(account))
+        expect(flash[:alert]).to include("not found")
       end
     end
 
@@ -146,11 +146,11 @@ RSpec.describe "/accounts/:account_id/license_assignments", type: :request do
         }
       end
 
-      it "returns error status and message" do
+      it "redirects with error message" do
         delete account_license_assignment_path(account, 0),
                params: { license_assignment: invalid_destroy_attributes }
-        expect(flash.now[:alert]).to include("No matching license assignments found")
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to redirect_to(account_path(account))
+        expect(flash[:alert]).to include("not found")
       end
     end
 

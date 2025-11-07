@@ -4,5 +4,11 @@ en:
     updated: "Account was successfully updated."
     deleted: "Account was successfully deleted."
     not_found: "%{resource} not found."
+    show:
+      license_assignments:
+        title: "License Assignments"
+        description: "A list of all license assignments in this account"
+        manage: "Manage License Assignments"
+        no_assignments: "No license assignments found"
   shared:
     not_found: "%{resource} not found."

@@ -15,6 +15,21 @@ class Subscription < ApplicationRecord
 
   validate :expires_at_after_issued_at
 
+  def assigned_licenses_count
+    LicenseAssignment.joins(:user)
+                     .where(users: { account_id: account_id })
+                     .where(product_id: product_id)
+                     .count
+  end
+
+  def licenses_available
+    number_of_licenses - assigned_licenses_count
+  end
+
+  def licenses_available?
+    licenses_available.positive?
+  end
+
   private
 
   def expires_at_after_issued_at

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :accounts do
     resources :users, module: "accounts"
     resources :subscriptions, module: "accounts"
+    resources :license_assignments, module: "accounts", only: [ :new, :create, :destroy ]
   end
   resources :products
 end
